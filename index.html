@@ -12,12 +12,11 @@
             --primary-red: #8B1E22;
             --primary-hover: #A52429;
             --accent-pink: #FFF0F2;
-            --bg-gradient: linear-gradient(135deg, #FFF9FA 0%, #FFEBF0 50%, #FFF5F7 100%);
-            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.88);
             --card-border: rgba(139, 30, 34, 0.12);
             --text-dark: #1A1A1A;
             --text-muted: #555555;
-            --shadow: 0 10px 30px rgba(139, 30, 34, 0.05);
+            --shadow: 0 10px 30px rgba(139, 30, 34, 0.06);
             --radius: 18px;
         }
 
@@ -29,12 +28,21 @@
             scroll-behavior: smooth;
         }
 
+        /* Background Animation */
         body {
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, #FFF9FA 0%, #FFEBF0 50%, #FFF5F7 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         body::before {
@@ -52,6 +60,7 @@
             font-family: 'Playfair Display', serif;
         }
 
+        /* Header & Navigation */
         header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -103,6 +112,14 @@
 
         .btn-talk:hover { background: var(--primary-hover); }
 
+        /* Three lines mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary-red);
+            cursor: pointer;
+        }
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -136,6 +153,19 @@
             border-radius: 2px;
         }
 
+        /* Scroll Animation Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
         .hero {
             display: grid;
             grid-template-columns: 1.3fr 0.9fr;
@@ -384,6 +414,7 @@
             text-transform: uppercase;
         }
 
+        /* Projects Section */
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -539,10 +570,23 @@
             font-size: 0.85rem;
         }
 
+        /* Mobile Responsive Styles */
         @media (max-width: 850px) {
             .hero, .contact-section, .project-card { grid-template-columns: 1fr; }
             header { padding: 15px 5%; }
-            nav ul { display: none; }
+            .menu-toggle { display: block; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px; left: 0; width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-bottom: 1px solid var(--card-border);
+                text-align: center;
+            }
+            nav ul.show { display: flex; }
             .hero h1 { font-size: 2.4rem; }
         }
     </style>
@@ -551,8 +595,11 @@
 
     <header>
         <a href="#" class="logo"><i class="fa-solid fa-flask"></i> AK.</a>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
         <nav>
-            <ul>
+            <ul id="nav-list">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
@@ -565,7 +612,7 @@
     <div class="container">
 
         <!-- Hero Section -->
-        <section class="hero" id="about">
+        <section class="hero reveal" id="about">
             <div>
                 <span class="badge-open"><i class="fa-solid fa-circle-dot"></i> OPEN TO ANALYTICAL & TOXICOLOGY ROLES</span>
                 <h1>Anees Khatoon</h1>
@@ -575,7 +622,7 @@
                 </p>
                 <div class="hero-btns">
                     <a href="#projects" class="btn-primary"><i class="fa-solid fa-flask"></i> View Projects</a>
-                    <a href="Anees_Khatoon_CV.pdf" target="_blank" class="btn-secondary"><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
+                    <a href="https://github.com/aneesk115" target="_blank" class="btn-secondary"><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
                 </div>
                 <div class="social-pills">
                     <a href="mailto:aneeskhatoon536@gmail.com" class="social-pill"><i class="fa-regular fa-envelope"></i> Email</a>
@@ -586,13 +633,13 @@
             
             <div class="hero-image-card">
                 <div class="floating-badge badge-top"><i class="fa-solid fa-award" style="color: #8B1E22;"></i> CGPA 3.87 / Silver Medalist</div>
-                <!-- Image file connected -->
+                <!-- Updated with your confirmed brown lab illustration image file -->
                 <img src="1000371764.jpg" alt="Anees Khatoon Laboratory Illustration">
                 <div class="floating-badge badge-bottom"><i class="fa-solid fa-book-open" style="color: #8B1E22;"></i> Published Researcher</div>
             </div>
         </section>
 
-        <div class="metric-bar">
+        <div class="metric-bar reveal">
             <div class="metric-item">
                 <h3>3.87</h3>
                 <p>CGPA (Silver Medalist)</p>
@@ -611,21 +658,23 @@
             </div>
         </div>
 
-        <span class="section-tag">ABOUT ME</span>
-        <h2 class="section-title">Securing insights through analysis and samples</h2>
-        <div class="card" style="margin-bottom: 30px;">
-            <p style="color: var(--text-muted); margin-bottom: 15px;">
-                I am <strong>Anees Khatoon</strong>, a Forensic Chemistry and Toxicology graduate from Liaquat University of Medical & Health Sciences with a CGPA of 3.87/4.00 and a Silver Medal (2nd position among 67 students). My work sits at the intersection of advanced analytical instrumentation, sample extraction methodologies, and toxicological screening, and I care about building reliable analytical workflows that hold up under strict quality standards, not just in a lab.
-            </p>
-            <p style="color: var(--text-muted); margin-bottom: 15px;">
-                My research on functional nanomaterial synthesis was published in 2026. I have completed practical laboratory internships at the Punjab Forensic Science Agency (PFSA), Sindh Police Forensic Division, Chemico-Bacteriological Laboratory, and the LUMHS Department of Molecular Biology & Genetics for molecular techniques.
-            </p>
-            <p style="color: var(--text-muted);">
-                I enjoy the full lifecycle of an analytical problem: sample collection and matrix purification, method optimization using advanced tools like GC-MS, LC-MS/MS, and HPLC, extracting precise measurements, then writing up the findings clearly enough that someone else can act on them. Reach out if you are hiring for an analytical chemistry, forensic or toxicology role.
-            </p>
+        <div class="reveal">
+            <span class="section-tag">ABOUT ME</span>
+            <h2 class="section-title">Securing insights through analysis and samples</h2>
+            <div class="card" style="margin-bottom: 30px;">
+                <p style="color: var(--text-muted); margin-bottom: 15px;">
+                    I am <strong>Anees Khatoon</strong>, a Forensic Chemistry and Toxicology graduate from Liaquat University of Medical & Health Sciences with a CGPA of 3.87/4.00 and a Silver Medal (2nd position among 67 students). My work sits at the intersection of advanced analytical instrumentation, sample extraction methodologies, and toxicological screening, and I care about building reliable analytical workflows that hold up under strict quality standards, not just in a lab.
+                </p>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">
+                    My research on functional nanomaterial synthesis was published in 2026. I have completed practical laboratory internships at the Punjab Forensic Science Agency (PFSA), Sindh Police Forensic Division, Chemico-Bacteriological Laboratory, and the LUMHS Department of Molecular Biology & Genetics for molecular techniques.
+                </p>
+                <p style="color: var(--text-muted);">
+                    I enjoy the full lifecycle of an analytical problem: sample collection and matrix purification, method optimization using advanced tools like GC-MS, LC-MS/MS, and HPLC, extracting precise measurements, then writing up the findings clearly enough that someone else can act on them. Reach out if you are hiring for an analytical chemistry, forensic or toxicology role.
+                </p>
+            </div>
         </div>
 
-        <div class="focus-cards">
+        <div class="focus-cards reveal">
             <div class="card focus-card">
                 <div class="focus-icon"><i class="fa-solid fa-vial-circle-check"></i></div>
                 <div>
@@ -649,10 +698,12 @@
             </div>
         </div>
 
-        <span class="section-tag" id="skills">SKILLS & EXPERTISE</span>
-        <h2 class="section-title">Technical Skill Set</h2>
+        <div class="reveal" id="skills">
+            <span class="section-tag">SKILLS & EXPERTISE</span>
+            <h2 class="section-title">Technical Skill Set</h2>
+        </div>
         
-        <div class="skills-grid">
+        <div class="skills-grid reveal">
             <div class="card">
                 <div class="skill-group-title"><i class="fa-solid fa-microscope"></i> 1. Analytical Instrumentation</div>
                 <div class="tag-cloud">
@@ -714,9 +765,11 @@
             </div>
         </div>
 
-        <span class="section-tag">ACADEMIC EXCELLENCE</span>
-        <h2 class="section-title">Honors & Awards</h2>
-        <div class="honors-grid">
+        <div class="reveal">
+            <span class="section-tag">ACADEMIC EXCELLENCE</span>
+            <h2 class="section-title">Honors & Awards</h2>
+        </div>
+        <div class="honors-grid reveal">
             <div class="card honor-card">
                 <span class="cert-source">LUMHS, Jamshoro • 2025</span>
                 <h3 style="margin: 5px 0;">Silver Medal</h3>
@@ -734,9 +787,11 @@
             </div>
         </div>
 
-        <span class="section-tag">CONTINUOUS LEARNING</span>
-        <h2 class="section-title">Certifications & Training</h2>
-        <div class="certs-grid">
+        <div class="reveal">
+            <span class="section-tag">CONTINUOUS LEARNING</span>
+            <h2 class="section-title">Certifications & Training</h2>
+        </div>
+        <div class="certs-grid reveal">
             <div class="card cert-card">
                 <span class="cert-source">Elevify</span>
                 <h4>Chromatography & Mass Spectrometry (HPLC & GC)</h4>
@@ -768,9 +823,11 @@
         </div>
 
         <!-- Featured Work with Side Visuals -->
-        <span class="section-tag" id="projects">FEATURED WORK</span>
-        <h2 class="section-title">Projects That Matter</h2>
-        <div class="projects-grid">
+        <div class="reveal" id="projects">
+            <span class="section-tag">FEATURED WORK</span>
+            <h2 class="section-title">Projects That Matter</h2>
+        </div>
+        <div class="projects-grid reveal">
             
             <div class="card project-card">
                 <div>
@@ -850,10 +907,12 @@
 
         </div>
 
-        <span class="section-tag" id="experience">PROFESSIONAL EXPERIENCE</span>
-        <h2 class="section-title">Where I've Made Impact</h2>
+        <div class="reveal" id="experience">
+            <span class="section-tag">PROFESSIONAL EXPERIENCE</span>
+            <h2 class="section-title">Where I've Made Impact</h2>
+        </div>
         
-        <div class="timeline">
+        <div class="timeline reveal">
             <div class="timeline-item">
                 <div class="card">
                     <span class="timeline-date">Sept 2025 to Oct 2025</span>
@@ -905,18 +964,22 @@
             </div>
         </div>
 
-        <span class="section-tag">RESEARCH</span>
-        <h2 class="section-title">Published Research</h2>
-        <div class="card" style="border-left: 4px solid var(--primary-red); margin-bottom: 60px;">
+        <div class="reveal">
+            <span class="section-tag">RESEARCH</span>
+            <h2 class="section-title">Published Research</h2>
+        </div>
+        <div class="card reveal" style="border-left: 4px solid var(--primary-red); margin-bottom: 60px;">
             <span class="cert-source" style="color: #15803d;">PUBLISHED, SPECTRUM OF ENGINEERING SCIENCES (2026)</span>
             <h3 style="margin: 8px 0;">PHYTOCHEMICAL-MEDIATED GREEN SYNTHESIS OF TiO2 NANOPARTICLES USING SOLANUM SURATTENSE: CHARACTERIZATION AND ANTIMICROBIAL ACTIVITY</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 10px;">Khan, S., Shabeer, U. F., Bibi, I., Khan, M., Anees Khatoon, A., Zamir, A., Farooq, A., & Khan, M.</p>
             <p style="font-size: 0.88rem; color: var(--text-muted);">Co-authored peer-reviewed research exploring eco-friendly green synthesis of titanium dioxide TiO² nanoparticles using plant extracts. Contributed to structural characterization (UV-Vis, XRD, SEM) and evaluating antimicrobial efficiency for bio-analytical applications.</p>
         </div>
 
-        <span class="section-tag">LEADERSHIP</span>
-        <h2 class="section-title">Leadership & Extracurricular</h2>
-        <div class="focus-cards">
+        <div class="reveal">
+            <span class="section-tag">LEADERSHIP</span>
+            <h2 class="section-title">Leadership & Extracurricular</h2>
+        </div>
+        <div class="focus-cards reveal">
             <div class="card">
                 <h3>Student Co-coordinator</h3>
                 <p style="font-size: 0.85rem; font-weight: 600; color: var(--primary-red);">Forensic Seminars & Workshops</p>
@@ -934,9 +997,11 @@
             </div>
         </div>
 
-        <span class="section-tag" id="contact">GET IN TOUCH</span>
-        <h2 class="section-title">Let's Connect</h2>
-        <div class="contact-section">
+        <div class="reveal" id="contact">
+            <span class="section-tag">GET IN TOUCH</span>
+            <h2 class="section-title">Let's Connect</h2>
+        </div>
+        <div class="contact-section reveal">
             <div class="contact-info">
                 <h3>Open to Opportunities</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted);">
@@ -982,7 +1047,7 @@
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button type="submit" class="btn-primary" style="border: none; cursor: pointer;"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
-                        <a href="Anees_Khatoon_CV.pdf" target="_blank" class="btn-secondary"><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
+                        <a href="https://github.com/aneesk115" target="_blank" class="btn-secondary"><i class="fa-solid fa-download"></i> Download Resume</a>
                     </div>
                 </form>
             </div>
@@ -994,5 +1059,32 @@
         <p>&copy; 2026 Anees Khatoon. All Rights Reserved. | Designed for Analytical & Toxicology Portfolio</p>
     </footer>
 
+    <!-- JavaScript for Mobile Menu & Scroll Animation -->
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('show');
+        });
+
+        // Scroll Reveal Animation
+        window.addEventListener('scroll', revealOnScroll);
+
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                let elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        // Trigger once on load
+        revealOnScroll();
+    </script>
 </body>
 </html>
